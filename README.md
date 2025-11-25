@@ -4,8 +4,7 @@ Tiny Go notes API I'm using to learn:
 
 - Go interfaces and structs
 - net/http handlers
-- JSON encode/decode
-- Basic REST patterns (GET/POST/DELETE)
+- Go JSON encode/decode
 
 Endpoints:
 - `GET /notes` – list all notes
