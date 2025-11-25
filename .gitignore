@@ -1,0 +1,22 @@
+# Binaries
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+server
+notes-app
+
+# Build output
+bin/
+dist/
+
+# Go stuff
+*.log
+*.out
+
+# IDEs / editors
+.vscode/
+.idea/
+*.swp
+*.swo
