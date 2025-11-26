@@ -18,17 +18,19 @@ type CreateNoteRequest struct {
     Body  string `json:"body"`
 }
 
-
 type Store interface {
 	save(note Note) (Note, error)
 	delete(id  string) error
 	get(id string) (Note, error)
 	getAll() []Note
+	update(id string, note Note) (Note, error)
 }
 
 type inMemoryStore struct {
 	notes []Note
 }
+
+
 
 func (m *inMemoryStore) save(note Note) (Note, error) {
 	id := uuid.NewString()
@@ -45,6 +47,18 @@ func (m *inMemoryStore) delete(id string) error {
 		}
 	}
 	return fmt.Errorf("note with id %s not found", id)
+}
+
+func (m *inMemoryStore) update(id string, note Note) (Note, error) {
+	for i,val := range m.notes{
+		if val.ID == id {
+			originalNote := &m.notes[i]
+			originalNote.Title = note.Title
+			originalNote.Body = note.Body
+			return m.notes[i], nil
+		}
+	}
+	return Note{}, fmt.Errorf("note with id %s not found", id)
 }
 
 func (m *inMemoryStore) get(id string) (Note, error) {
