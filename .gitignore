@@ -6,10 +6,11 @@
 *.dylib
 server
 notes-app
-
+notesapp
 # Build output
 bin/
 dist/
+
 
 # Go stuff
 *.log
