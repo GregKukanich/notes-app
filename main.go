@@ -30,7 +30,8 @@ func main() {
 	}
 	log.Println("Created table succesfully or it already exists");
 
-	store := &inMemoryStore{}
+	// store := &inMemoryStore{}
+	store := &sqlStore{db: db}
 	http.HandleFunc("/notes", notesHandler(store))
 	http.HandleFunc("/notes/", noteItemHandler(store))
 	log.Fatal(http.ListenAndServe(":8080", nil))

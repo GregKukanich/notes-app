@@ -41,7 +41,11 @@ func noteItemHandler(store Store) http.HandlerFunc {
 }
 
 func handleGetNotes(w http.ResponseWriter, r *http.Request, store Store){
-	notes := store.getAll()
+	notes, err := store.getAll()
+	if err != nil {
+		http.Error(w, "failed to get notes", http.StatusInternalServerError)
+		return
+	}
 
 	w.Header().Set("Content-Type", "application/json")
 	if err := json.NewEncoder(w).Encode(notes); err != nil {
