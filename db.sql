@@ -1,0 +1,18 @@
+CREATE TABLE IF NOT EXISTS notes (
+	id TEXT NOT NULL PRIMARY KEY,
+	title TEXT,
+	body TEXT,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TRIGGER IF NOT EXISTS update_updated_at_column
+AFTER UPDATE ON notes
+FOR EACH ROW
+BEGIN
+    UPDATE notes
+    SET updated_at = CURRENT_TIMESTAMP
+    WHERE id = NEW.id;
+END;
+
+

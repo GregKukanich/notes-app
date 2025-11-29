@@ -15,7 +15,7 @@ type sqlStore struct {
 func (s *sqlStore) save(note Note) (Note, error) {
 	id := uuid.NewString()
 	note.ID = id
-	
+
 	stmt, err := s.db.Prepare("INSERT INTO notes (id, title, body) VALUES (?, ?, ?)")
 	if err != nil {
 		return Note{}, fmt.Errorf("save note: %w", err)
@@ -40,13 +40,13 @@ func (s *sqlStore) delete(id string) error {
 
 	res, err := stmt.Exec(id)
 	if err != nil {
-        return fmt.Errorf("delete note %s: %w", id, err)
-    }
+		return fmt.Errorf("delete note %s: %w", id, err)
+	}
 
 	rows, err := res.RowsAffected()
-    if err != nil {
-        return fmt.Errorf("delete note %s: getting rows affected: %w", id, err)
-    }
+	if err != nil {
+		return fmt.Errorf("delete note %s: getting rows affected: %w", id, err)
+	}
 
 	if rows == 0 {
 		return errors.New("note not found")
@@ -91,24 +91,24 @@ func (s *sqlStore) get(id string) (Note, error) {
 
 func (s *sqlStore) getAll() ([]Note, error) {
 	rows, err := s.db.Query("SELECT id, title, body FROM notes;")
-    if err != nil {
-        return nil, fmt.Errorf("get all notes: %w", err)
-    }
-    defer rows.Close()
+	if err != nil {
+		return nil, fmt.Errorf("get all notes: %w", err)
+	}
+	defer rows.Close()
 
-    var notes []Note
+	var notes []Note
 
-    for rows.Next() {
-        var n Note
-        if err := rows.Scan(&n.ID, &n.Title, &n.Body); err != nil {
-            return nil, fmt.Errorf("scan note: %w", err)
-        }
-        notes = append(notes, n)
-    }
+	for rows.Next() {
+		var n Note
+		if err := rows.Scan(&n.ID, &n.Title, &n.Body); err != nil {
+			return nil, fmt.Errorf("scan note: %w", err)
+		}
+		notes = append(notes, n)
+	}
 
-    if err := rows.Err(); err != nil {
-        return nil, fmt.Errorf("rows iteration: %w", err)
-    }
+	if err := rows.Err(); err != nil {
+		return nil, fmt.Errorf("rows iteration: %w", err)
+	}
 
-    return notes, nil
+	return notes, nil
 }

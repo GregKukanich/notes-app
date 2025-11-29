@@ -4,19 +4,13 @@ import (
 	"database/sql"
 	"log"
 	"net/http"
+	"os"
 
 	_ "github.com/mattn/go-sqlite3"
 )
 
-const sqlStatement = `CREATE TABLE IF NOT EXISTS notes (
-	id TEXT NOT NULL PRIMARY KEY,
-	title TEXT,
-	body TEXT
-);`
-
 func main() {
 	log.Println("Starting application on port 8080")
-
 
 	db, err := sql.Open("sqlite3", "./testdb")
 	if err != nil {
@@ -24,11 +18,16 @@ func main() {
 	}
 	defer db.Close()
 
-	_, err = db.Exec(sqlStatement)
+	sqlStatement, err := os.ReadFile("db.sql")
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Println("Created table succesfully or it already exists");
+
+	_, err = db.Exec(string(sqlStatement))
+	if err != nil {
+		log.Fatal(err)
+	}
+	log.Println("Created table succesfully or it already exists")
 
 	// store := &inMemoryStore{}
 	store := &sqlStore{db: db}
