@@ -12,7 +12,7 @@ import (
 func main() {
 	log.Println("Starting application on port 8080")
 
-	db, err := sql.Open("sqlite3", "./testdb")
+	db, err := sql.Open("sqlite3", "./realdb")
 	if err != nil {
 		log.Fatal(err)
 	}
