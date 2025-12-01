@@ -31,7 +31,7 @@ func main() {
 
 	// store := &inMemoryStore{}
 	store := &sqlStore{db: db}
-	http.HandleFunc("/notes", notesHandler(store))
-	http.HandleFunc("/notes/", noteItemHandler(store))
+	http.Handle("/notes", loggingMiddleware(notesHandler(store)))
+	http.Handle("/notes/", loggingMiddleware(noteItemHandler(store)))
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
