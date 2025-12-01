@@ -8,13 +8,13 @@ import (
 )
 
 func setup(t *testing.T) *sqlStore {
-	db, err := sql.Open("sqlite3", "./testdb")
+	db, err := sql.Open("sqlite3", "./test.db")
 	if err != nil {
 		t.Fatal(err)
 	}
 
 	t.Cleanup(func() {
-		err = os.Remove("./testdb")
+		err = os.Remove("./test.db")
 		if err != nil {
 			log.Fatalf("Error deleting file: %v", err)
 		}

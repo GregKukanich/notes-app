@@ -7,11 +7,13 @@
 server
 notes-app
 notesapp
-testdb
+
 # Build output
 bin/
 dist/
 
+#Sqlite db
+*.db
 
 # Go stuff
 *.log
