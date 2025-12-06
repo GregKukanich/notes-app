@@ -6,6 +6,8 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/go-chi/chi/v5"
+	"github.com/go-chi/chi/v5/middleware"
 	_ "github.com/mattn/go-sqlite3"
 )
 
@@ -31,7 +33,26 @@ func main() {
 
 	// store := &inMemoryStore{}
 	store := &sqlStore{db: db}
-	http.Handle("/notes", loggingMiddleware(notesHandler(store)))
-	http.Handle("/notes/", loggingMiddleware(noteItemHandler(store)))
-	log.Fatal(http.ListenAndServe(":8080", nil))
+
+	r := chi.NewRouter()
+	r.Use(middleware.RequestID)
+	r.Use(middleware.RealIP)
+	r.Use(middleware.Logger)
+	r.Use(middleware.Recoverer)
+
+	r.Route("/notes", func(r chi.Router) {
+		// /notes
+		r.Get("/", handleGetNotes(store))
+		r.Post("/", handleCreateNote(store))
+
+		// /notes/{id}
+		r.Route("/{id}", func(r chi.Router) {
+			r.Get("/", handleGetNote(store))
+			r.Put("/", handleUpdateNote(store))
+			r.Delete("/", handleDeleteNote(store))
+		})
+	})
+
+	// log.Fatal(http.ListenAndServeTLS(":8080", "cert.pem", "key.pem", r))
+	log.Fatal(http.ListenAndServe(":8080", r))
 }
