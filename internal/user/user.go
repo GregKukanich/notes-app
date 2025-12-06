@@ -1,4 +1,4 @@
-package main
+package user
 
 import "context"
 
@@ -19,8 +19,9 @@ type UserResponse struct {
 	CreatedAt string `json:"created_at"`
 }
 
-type UserStore interface {
+type UserStoreIntf interface {
 	CreateUser(ctx context.Context, u User) (UserResponse, error)
-	// GetByUserName(ctx context.Context, username string) (UserResponse, error)
+	GetUserPasswordHash(ctx context.Context, username string) (string, error)
 	GetByID(ctx context.Context, id string) (UserResponse, error)
+	GetUserByUserName(ctx context.Context, username string) (User, error)
 }

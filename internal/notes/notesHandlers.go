@@ -1,4 +1,4 @@
-package main
+package notes
 
 import (
 	"encoding/json"
@@ -7,7 +7,7 @@ import (
 	"github.com/go-chi/chi/v5"
 )
 
-func handleGetNotes(store Store) http.HandlerFunc {
+func HandleGetNotes(store Store) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		notes, err := store.getAll()
 		if err != nil {
@@ -23,7 +23,7 @@ func handleGetNotes(store Store) http.HandlerFunc {
 	}
 }
 
-func handleCreateNote(store Store) http.HandlerFunc {
+func HandleCreateNote(store Store) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var req CreateNoteRequest
 
@@ -52,7 +52,7 @@ func handleCreateNote(store Store) http.HandlerFunc {
 	}
 }
 
-func handleGetNote(store Store) http.HandlerFunc {
+func HandleGetNote(store Store) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		id := chi.URLParam(r, "id")
 
@@ -70,7 +70,7 @@ func handleGetNote(store Store) http.HandlerFunc {
 	}
 }
 
-func handleDeleteNote(store Store) http.HandlerFunc {
+func HandleDeleteNote(store Store) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		id := chi.URLParam(r, "id")
 
@@ -83,7 +83,7 @@ func handleDeleteNote(store Store) http.HandlerFunc {
 	}
 }
 
-func handleUpdateNote(store Store) http.HandlerFunc {
+func HandleUpdateNote(store Store) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		id := chi.URLParam(r, "id")
 		var req CreateNoteRequest

@@ -1,4 +1,4 @@
-package main
+package notes
 
 import (
 	"database/sql"
@@ -8,11 +8,15 @@ import (
 	"github.com/google/uuid"
 )
 
-type sqlStore struct {
+type NotesStore struct {
 	db *sql.DB
 }
 
-func (s *sqlStore) save(note Note) (Note, error) {
+func NewNotesStore(db *sql.DB) *NotesStore {
+	return &NotesStore{db: db}
+}
+
+func (s *NotesStore) save(note Note) (Note, error) {
 	id := uuid.NewString()
 	note.ID = id
 
@@ -30,7 +34,7 @@ func (s *sqlStore) save(note Note) (Note, error) {
 	return note, nil
 }
 
-func (s *sqlStore) delete(id string) error {
+func (s *NotesStore) delete(id string) error {
 
 	stmt, err := s.db.Prepare("DELETE FROM notes WHERE id = ?;")
 	if err != nil {
@@ -55,7 +59,7 @@ func (s *sqlStore) delete(id string) error {
 	return nil
 }
 
-func (s *sqlStore) update(id string, note Note) (Note, error) {
+func (s *NotesStore) update(id string, note Note) (Note, error) {
 	_, err := s.db.Exec("UPDATE notes SET title = ?, body = ? WHERE id = ?;", note.Title, note.Body, id)
 	if err != nil {
 		return Note{}, fmt.Errorf("update note: %s: %w", note.ID, err)
@@ -73,7 +77,7 @@ func (s *sqlStore) update(id string, note Note) (Note, error) {
 	return n, nil
 }
 
-func (s *sqlStore) get(id string) (Note, error) {
+func (s *NotesStore) get(id string) (Note, error) {
 	var n Note
 
 	row := s.db.QueryRow("SELECT id, title, body FROM notes WHERE id = ?;", id)
@@ -89,7 +93,7 @@ func (s *sqlStore) get(id string) (Note, error) {
 	return n, nil
 }
 
-func (s *sqlStore) getAll() ([]Note, error) {
+func (s *NotesStore) getAll() ([]Note, error) {
 	rows, err := s.db.Query("SELECT id, title, body FROM notes;")
 	if err != nil {
 		return nil, fmt.Errorf("get all notes: %w", err)

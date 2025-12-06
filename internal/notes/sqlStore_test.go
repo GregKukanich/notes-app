@@ -1,4 +1,4 @@
-package main
+package notes
 
 import (
 	"database/sql"
@@ -7,7 +7,7 @@ import (
 	"testing"
 )
 
-func setup(t *testing.T) *sqlStore {
+func setup(t *testing.T) *NotesStore {
 	db, err := sql.Open("sqlite3", "./test.db")
 	if err != nil {
 		t.Fatal(err)
@@ -33,7 +33,7 @@ func setup(t *testing.T) *sqlStore {
 	log.Println("Created table succesfully or it already exists")
 
 	// store := &inMemoryStore{}
-	store := &sqlStore{db: db}
+	store := &NotesStore{db: db}
 	return store
 }
 
