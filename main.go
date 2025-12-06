@@ -33,6 +33,7 @@ func main() {
 
 	// store := &inMemoryStore{}
 	store := &sqlStore{db: db}
+	userStore := &userStore{db: db}
 
 	r := chi.NewRouter()
 	r.Use(middleware.RequestID)
@@ -50,6 +51,14 @@ func main() {
 			r.Get("/", handleGetNote(store))
 			r.Put("/", handleUpdateNote(store))
 			r.Delete("/", handleDeleteNote(store))
+		})
+	})
+
+	r.Route("/user", func(r chi.Router) {
+		r.Post("/", handleCreateUser(userStore))
+
+		r.Route("/{id}", func(r chi.Router) {
+			r.Get("/", handleGetUserById(userStore))
 		})
 	})
 
