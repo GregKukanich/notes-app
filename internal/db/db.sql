@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS user (
 CREATE TABLE IF NOT EXISTS session (
 	id TEXT NOT NULL PRIMARY KEY,
 	userId TEXT NOT NULL,
-    expiration TEXT NOT NULL
+    expiration INTEGER NOT NULL
 );
 
 CREATE TRIGGER IF NOT EXISTS update_notes_updated_at
