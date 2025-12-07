@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 	"notesapp/internal/session"
+	"time"
 
 	"github.com/go-chi/chi/v5"
 )
@@ -112,7 +113,7 @@ func HandleLogin(store UserStoreIntf, sessionStore session.SessionStoreIntf) htt
 			HttpOnly: true,
 			Secure:   true,                 // true in real HTTPS setups
 			SameSite: http.SameSiteLaxMode, // or Strict/None depending on use
-			Expires:  session.Expiration,
+			Expires:  time.Unix(session.Expiration, 0),
 		})
 
 		// Optionally write a JSON body or just a 204/200

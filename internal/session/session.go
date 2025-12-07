@@ -2,13 +2,12 @@ package session
 
 import (
 	"context"
-	"time"
 )
 
 type Session struct {
 	ID         string
 	UserID     string
-	Expiration time.Time
+	Expiration int64
 }
 
 type SessionStoreIntf interface {

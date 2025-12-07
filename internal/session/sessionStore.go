@@ -21,7 +21,7 @@ func (s *SessionStore) CreateSession(ctx context.Context, userID string) (Sessio
 	session := Session{
 		ID:         uuid.NewString(),
 		UserID:     userID,
-		Expiration: time.Now().Add(time.Minute * 30),
+		Expiration: time.Now().Add(time.Minute * 30).Unix(),
 	}
 
 	_, err := s.db.Exec("INSERT INTO session (id, userId, expiration) VALUES (?, ?, ?);", session.ID, session.UserID, session.Expiration)
