@@ -6,7 +6,6 @@
 *.dylib
 server
 notes-app
-notesapp
 
 # Build output
 bin/
